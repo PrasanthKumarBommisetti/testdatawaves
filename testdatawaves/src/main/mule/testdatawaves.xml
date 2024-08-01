@@ -26,6 +26,7 @@ payload.Staff.*Worker map (item, index) ->
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="67fb031c-355c-4b18-82b1-d7d7243b7e41" message="task 1 completed"/>
 	</flow>
 	<flow name="input2" doc:id="ad618bfe-078c-4ed9-ba4f-fc6ef82fe6c7" >
 		<http:listener doc:name="Listener" doc:id="80eea597-7937-4f64-bbff-9dd87b2fdf11" config-ref="HTTP_Listener_config" path="/input2"/>
