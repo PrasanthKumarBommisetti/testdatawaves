@@ -1,0 +1,24 @@
+[
+  {
+    "Name": "Sri B",
+    "PhoneData": {
+      "PhoneType": "HOME",
+      "PhoneNumber": "+1 (301) 4565869789"
+    },
+    "PhoneData": {
+      "PhoneType": "OFC",
+      "PhoneNumber": "+1 (301) 0000000"
+    }
+  },
+  {
+    "Name": "Sri B",
+    "PhoneData": {
+      "PhoneType": "WORK",
+      "PhoneNumber": ""
+    },
+    "PhoneData": {
+      "PhoneType": "WORK",
+      "PhoneNumber": ""
+    }
+  }
+]

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><OrderDetails>
+    <OrderHeader>
+        <OrderID>1234</OrderID>
+        <OrderDate>20230509</OrderDate>
+    </OrderHeader>
+    <OrderLineDetails>
+        <LineID>1</LineID>
+        <ProdID>0182860679000</ProdID>
+        <ProdDesc>Type3 Laptop</ProdDesc>
+        <UnitPrice>8000</UnitPrice>
+        <Quantity>200</Quantity>
+    </OrderLineDetails>
+    <OrderLineDetails>
+        <LineID>2</LineID>
+        <ProdID>0182860670019</ProdID>
+        <ProdDesc>Type5 Laptop</ProdDesc>
+        <UnitPrice>17000</UnitPrice>
+        <Quantity>2000</Quantity>
+    </OrderLineDetails>
+    <OrderLineDetails>
+        <LineID>2</LineID>
+        <ProdID>0182860670019</ProdID>
+        <ProdDesc>Type5 Laptop</ProdDesc>
+        <UnitPrice>17000</UnitPrice>
+        <Quantity>2500</Quantity>
+    </OrderLineDetails>
+    <OrderLineDetails>
+        <LineID>4</LineID>
+        <ProdID>0182860670025</ProdID>
+        <ProdDesc>Type7 Laptop</ProdDesc>
+        <UnitPrice>19000</UnitPrice>
+        <Quantity>300</Quantity>
+    </OrderLineDetails>
+</OrderDetails>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4ea777a6-2fab-42f5-83fe-2845f70f09ce" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="input1" doc:id="366480e6-0a08-457c-ac29-f3a699dd02a3" >
+		<http:listener doc:name="Listener" doc:id="665b1be9-03a8-4b31-937f-c3c09e2902a5" config-ref="HTTP_Listener_config" path="/input1"/>
+		<ee:transform doc:name="Transform Message" doc:id="cb6fc57e-5752-44ec-9d3d-96ed05473ca7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.Staff.*Worker map (item, index) -> 
+    {
+	"name": item.Name,
+	((item.*PhoneData) map ((item2, index2) ->   {
+		((item2.PhoneType ++ "_Phone"): item2.PhoneNumber) if (!isEmpty((item2.PhoneNumber)))
+	}
+        ))
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input2" doc:id="ad618bfe-078c-4ed9-ba4f-fc6ef82fe6c7" >
+		<http:listener doc:name="Listener" doc:id="80eea597-7937-4f64-bbff-9dd87b2fdf11" config-ref="HTTP_Listener_config" path="/input2"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="b8446da3-5cfd-4882-b4ec-d14243e6eaac" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+&#45;&#45;-
+
+payload map ((item, index) -> {
+    "internalid": item.internalid,
+    "department": item.department,
+    "parentdepartment": item.parentdepartment,
+    "reason": if((payload countBy ( $.internalid == item.internalid )) >= 2) "matches" else "notmatches"
+
+})&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Transform Message" doc:id="a1a3b946-9bf7-4995-85af-423235d56ea1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+fun count(demo) = sizeOf(
+    (payload map(item,index)->
+            if ( item.internalid == demo.internalid ) true  else false) filter ($ == true)
+    )
+fun count2() = ((payload groupBy $.internalid) pluck {
+	($$): sizeOf($)
+}) reduce ($ ++ $$)
+---
+payload map ((item, index) -> {
+	"internalid": item.internalid,
+	"department": item.department,
+	"parentdepartment": item.parentdepartment,
+	"reason": if ( count2()[item.internalid] >= 2 ) "matches" else "notmatches"
+})
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input3" doc:id="d04c6c20-067b-40b9-a4fd-886655fb0ecc" >
+		<http:listener doc:name="Listener" doc:id="1db059a5-267b-459d-9eab-2302ad36cce8" config-ref="HTTP_Listener_config" path="/input3"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="ae2178b9-6981-4449-b598-35cf06cb91a7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+
+(payload.Results.Properties.*Property map (item, index) -> {
+    (item.Name): item.Value
+}) reduce ((item, accumulator={}) -> accumulator ++ item)&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Transform Message" doc:id="e8fb05c5-d6ad-4c40-87c6-e167794c5a0f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+(payload..Properties) map(item,index)->item mapObject(a,b,c)->{
+	(a.Name):a.Value
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input4" doc:id="6210f759-8c14-4012-b7e7-eeeb130a3220" >
+		<http:listener doc:name="Listener" doc:id="3c92e50b-4893-42c4-8fef-fe982611a83c" config-ref="HTTP_Listener_config" path="/input4"/>
+		<ee:transform doc:name="Transform Message" doc:id="edcda14f-72b1-4853-9eb9-c88163fd5916" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+// (payload groupBy(item, index) -> 
+//     item.Key 
+// ) mapObject ((value, key, index) -> 
+//     (index): value)
+
+payload groupBy $.Key mapObject {($$$):$}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input5" doc:id="97e4534c-bb22-4893-8669-915df3e63940" >
+		<http:listener doc:name="Listener" doc:id="7866c5b6-9846-449b-953d-c843520457f2" config-ref="HTTP_Listener_config" path="/input5"/>
+		<ee:transform doc:name="Transform Message" doc:id="5483216a-59e3-4cb4-99b5-cbfe6aae42c8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten((payload[0] map ((item, index) -> 
+    payload[1] map ((item2, index) -> {
+	"train": item.train,
+	"hotel": item2.hotel,
+	"price": item.price + item2.price
+}
+   ))) )]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input6" doc:id="073cce3b-65ac-4183-93d3-02c23235b8d8" >
+		<http:listener doc:name="Listener" doc:id="49fb4f24-69ad-4e3b-9f57-c7d710171b1d" config-ref="HTTP_Listener_config" path="/input6"/>
+		<ee:transform doc:name="Transform Message" doc:id="6cf7afa7-a25a-48e3-a146-e39253ef29c5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var StatusM={
+    "Internal": "I",
+    "External": "E",
+    "Null": "N/A"
+}
+var AccessM={
+    "Active" : "A",
+     "Inactive" : "I"
+}
+---
+// payload mapObject ((value, key, index) -> 
+// {
+// 	(key): if(key as String == "Status") StatusM[value] else if(key as String == "Access") AccessM[value] else value
+    
+// })
+payload mapObject {
+    ($$): if($$ as String == "Status") StatusM[$] else if($$ as String == "Access") AccessM[$] else $
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input7" doc:id="affea36d-673e-43b3-9955-0da07fddecc6" >
+		<http:listener doc:name="Listener" doc:id="67ee25f0-6a13-479a-a677-8d9bdef3b429" config-ref="HTTP_Listener_config" path="/input7"/>
+		<ee:transform doc:name="Transform Message" doc:id="7a7e9d6f-c861-405e-99f7-d150b79d1421" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json  duplicateKeyAsArray=true
+---
+
+(payload reduce ((item, accumulator) -> 
+    accumulator ++ item
+)) ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="6ee73d65-ef76-4859-956b-4783af3a680b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json  
+&#45;&#45;-
+
+payload mapObject ((value, key, index) -> 
+    (key): flatten(value)
+)
+&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Transform Message" doc:id="3465e2b9-1454-4400-948b-eb0808901dac" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+(payload[0] ++ payload[1] groupBy $$ pluck {
+($$) : flatten($ pluck $)
+}) reduce ($ ++ $$)
+
+
+
+// (((payload reduce ($$ ++ $)) groupBy $$) pluck{
+//     ($$): flatten($ pluck $)
+// }) reduce ($ ++ $$)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input8" doc:id="9170fece-5e25-409e-b834-713aa744c581" >
+		<http:listener doc:name="Listener" doc:id="d3e860c1-db57-4538-a12e-303002c6aad7" config-ref="HTTP_Listener_config" path="/input8"/>
+		<ee:transform doc:name="Transform Message" doc:id="e4d36f0a-7f99-401a-991c-5cc7a174fba8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "data":[
+        {
+            "type":payload.."type"[0] ++"s" ,
+            "attributes":{
+                "items": 
+                    payload[0].ChildAccounts map ((item, index) ->{
+                        "id": item.Id,
+                        "name": item.Name
+                    }
+                    )
+                
+            }
+        }
+    ]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input9" doc:id="0b6282cf-f361-4dee-bfbd-2440e6b9f4c0" >
+		<http:listener doc:name="Listener" doc:id="f5025005-43e2-4735-8fbf-113c9698cbc8" config-ref="HTTP_Listener_config" path="/input9"/>
+		<ee:transform doc:name="Transform Message" doc:id="f49c184d-9e9d-4a18-bc46-7e213e9f6b81" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var source=
+{
+    "List": {
+        "Id": "01234"
+    }
+}
+var destination=
+{
+    "Id": [{
+        "data": "",
+    }]
+}
+---
+destination mapObject ((value, key, index) ->
+    (key):(value) map ((item, index2) -> 
+            item mapObject ((value2, key2, index) -> 
+                (key2): source.List[key]
+            )
+    )
+ )]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input10" doc:id="054f7ccc-9d77-4d28-a6fa-f454d8942e05">
+		<http:listener doc:name="Listener" doc:id="808ea7a8-755e-4e0e-9d3b-301339b5b33c" config-ref="HTTP_Listener_config" path="/input10" />
+		<ee:transform doc:name="Transform Message" doc:id="4966d326-da87-42d0-8dfb-08c623ec48ac">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload map ($$++":"++$) ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input11" doc:id="946d56fa-9495-4e1b-b683-10a65d46f709">
+		<http:listener doc:name="Listener" doc:id="b0a58f6d-8a03-4f85-8e75-57df8473e9e8" config-ref="HTTP_Listener_config" path="/input11" />
+		<ee:transform doc:name="Transform Message" doc:id="7e1e36cb-6084-4846-b576-2e9c93803a6a">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+import mask from dw::util::Values
+
+
+---
+(payload mask ("Type") with "***") mask  "Currency" with "***"
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input12" doc:id="5cec01f6-fc9b-4181-9145-9f6652876f3f" >
+		<http:listener doc:name="Listener" doc:id="35da01f5-97f5-46a7-97a9-98a07d682ff2" config-ref="HTTP_Listener_config" path="/input12"/>
+		<ee:transform doc:name="Transform Message" doc:id="6eda7b42-5b4f-414f-ab29-72bea10c2f9e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"select * from order where id in ("++((payload map ((item) -> "'test" ++ item as String)
+) joinBy "'," ) ++"')"
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input13" doc:id="c3b58355-eba0-4c87-97ca-01ef6237ecd4">
+		<http:listener doc:name="Listener" doc:id="9e92eae6-e198-4581-9a3c-12ff31da2e6e" config-ref="HTTP_Listener_config" path="/input13" />
+		<ee:transform doc:name="Transform Message" doc:id="cffd600a-0b2e-44ee-a319-dab5ac439cbc">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "OrderDetails":{
+        "OrderHeader":payload.OrderDetails.OrderHeader,
+        "OrderLineDetails":
+                    (payload.OrderDetails.*OrderLineDetails distinctBy ($.LineID) map ((item, index) ->
+                            {
+                                "LineID": item.LineID,
+                                "ProdID": item.ProdID,
+                                "ProdDesc":item.ProdDesc,
+                                "UnitPrice":item.UnitPrice,
+                                "price": ((payload.OrderDetails.*OrderLineDetails) filter ((item2, index) -> 
+                                    item2.LineID == item.LineID
+                                )) reduce ((item3, priceOfBook=0) -> priceOfBook+ item3.Quantity)
+                            }
+                    ))
+        }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input14" doc:id="14fddfc1-7865-44bd-85b2-6b0e7a7a9a29">
+		<http:listener doc:name="Listener" doc:id="c1c067d9-4bc3-475a-a387-9fc8a1f247ef" config-ref="HTTP_Listener_config" path="/input14" />
+		<ee:transform doc:name="Transform Message" doc:id="e569b891-cd11-413d-96d6-8320071cd2fd">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var ip = "2023-05-14"
+---
+
+ip as Date { format: "yyyy-MM-dd" } as String { format: "yyyy MMM dd" } ++ " Time " ++ now() as String { format: "HH:mm:ss-SSS Z" }
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input15" doc:id="180d4641-a45d-4709-86ee-948afe1cf358">
+		<http:listener doc:name="Listener" doc:id="d2b90146-0b89-42b4-b80b-347e686816b7" config-ref="HTTP_Listener_config" path="/input15" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="b5b5ff61-fd65-483b-be4a-906dc4f86dba">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+(payload map ((item, index) -> {
+		name: item.name,
+		language: item.language,
+		index: index
+	}
+)) groupBy ((item, index) ->item.language )&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Transform Message" doc:id="9ed151b4-4c3d-4137-8357-7b698bfceef9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+
+payload map{
+    name:$.name,
+    language:$.language,
+    index:$$
+} groupBy $.language]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="input16" doc:id="41ef8276-47eb-43cd-9620-9cd4918effa4">
+		<http:listener doc:name="Listener" doc:id="be1b68df-cc78-4777-b7c6-1082b4b9dce5" config-ref="HTTP_Listener_config" path="/input16" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="5d1a8f2f-68cc-4697-b27c-2ae4eaf15f45">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/csv
+&#45;&#45;-
+payload map ((item, index) -> 
+{
+    Col0:(item pluck ((value, key, index) -> value )) joinBy  ";",
+    Col1:item.Col1,
+    Col2:item.Col2,
+    Col3:item.Col3
+}
+)&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Transform Message" doc:id="bf488927-622f-438e-8a88-17b9f7752d68" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map 
+{
+    Col0:$ pluck $ joinBy  ";",
+    Col1:$.Col1,
+    Col2:$.Col2,
+    Col3:$.Col3
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="test" doc:id="045e4393-0c10-4e4e-8df9-e25372b94409" >
+		<http:listener doc:name="Listener" doc:id="fb32db86-670b-483f-9f24-557d23d094dd" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8ab17af9-ae2c-43ed-a6eb-aa5aa8dfbf63" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="b9c12431-817e-41c8-9dc6-09286c8ac2f2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	time: now()
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="temp1" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	temp1:payload.temp1
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="2866b24b-ada9-4ae5-a37f-726d7a7a6f51" message="#[vars.temp1]"/>
+	</flow>
+</mule>

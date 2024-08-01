@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><Staff>
+    <Worker>
+        <Name>Sri B</Name>
+        <PhoneData>
+            <PhoneType>HOME</PhoneType>
+            <PhoneNumber>+1 (301) 0000000</PhoneNumber>
+        </PhoneData>
+        <PhoneData>
+            <PhoneType>WORK</PhoneType>
+            <PhoneNumber>+1 33333</PhoneNumber>
+        </PhoneData>
+    </Worker>
+    <Worker>
+        <Name>Tvarana</Name>
+        <PhoneData>
+            <PhoneType>OFC</PhoneType>
+            <PhoneNumber>+1 (301) 4565869789</PhoneNumber>
+        </PhoneData>
+        <PhoneData>
+            <PhoneType>WORK</PhoneType>
+            <PhoneNumber/>
+        </PhoneData>
+    </Worker>
+</Staff>

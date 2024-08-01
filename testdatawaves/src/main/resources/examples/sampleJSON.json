@@ -1,0 +1,17 @@
+[
+    {
+      "internalid": "12345",
+      "department": "111",
+      "parentdepartment": "ABCD"
+    },
+    {
+      "internalid": "123456",
+      "department": "111",
+      "parentdepartment": "ABCD"
+    },
+    {
+      "internalid": "12345",
+      "department": "123",
+      "parentdepartment": "ABCD"
+    }
+]

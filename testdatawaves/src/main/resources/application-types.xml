@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="test" format="csv">
+      <types:shape format="weave" example="examples/test.csv"><![CDATA[%dw 2.0
+
+type test = Array<{|  Col1: String,   Col2: String,   Col3: String|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="arrayOfObjects" format="json">
+      <types:shape format="weave" example="examples/sampleJSON.json"><![CDATA[%dw 2.0
+
+type arrayOfObjects = Array<{|  internalid: String,   department: String,   parentdepartment: String|}> {"example": "[{\\\"internalid\\\":\\\"12345\\\",\\\"department\\\":\\\"111\\\",\\\"parentdepartment\\\":\\\"ABCD\\\"},{\\\"internalid\\\":\\\"123456\\\",\\\"department\\\":\\\"111\\\",\\\"parentdepartment\\\":\\\"ABCD\\\"},{\\\"internalid\\\":\\\"12345\\\",\\\"department\\\":\\\"123\\\",\\\"parentdepartment\\\":\\\"ABCD\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="Code16" format="csv">
+      <types:shape format="weave" example="examples/code16IPFile-1.csv"><![CDATA[%dw 2.0
+
+type Code16 = Array<{|  Col1: String,   Col2: String,   Col3: String|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="code4IP" format="json">
+      <types:shape format="weave" example="examples/code4IPFile.json"><![CDATA[%dw 2.0
+
+type code4IP = Array<{|  Name: String,   Key: String|}> {"example": "[{\\\"Name\\\":\\\"Sri\\\",\\\"Key\\\":\\\"5fa0242c3efc\\\"},{\\\"Name\\\":\\\"Indu\\\",\\\"Key\\\":\\\"5fa0242c3efd\\\"},{\\\"Name\\\":\\\"Giri\\\",\\\"Key\\\":\\\"5fa0242c3efc\\\"},{\\\"Name\\\":\\\"Aish\\\",\\\"Key\\\":\\\"5fa0242c3efd\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code10IPFile" format="json">
+      <types:shape format="weave" example="examples/code10IPFile.json"><![CDATA[%dw 2.0
+
+type code10IPFile = Array<String> {"example": "[\\\"rahul\\\",\\\"singh\\\",\\\"srivastav\\\"]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code11" format="json">
+      <types:shape format="weave" example="examples/code11.json"><![CDATA[%dw 2.0
+
+type code11 = Array<{|  Account: {|    AccountId: String,     Name: String,     Phone: String,     SSN: String  |},   Type: String,   Amount: {|    Amount: String,     Currency: String  |},   CreditLine: {|    Type: String,     Amount: {|      Currency: String,       Amount: String    |}  |}|}> {"example": "[{\\\"Account\\\":{\\\"AccountId\\\":\\\"145661114\\\",\\\"Name\\\":\\\"Max Mule\\\",\\\"Phone\\\":\\\"998-889-8787\\\",\\\"SSN\\\":\\\"123-45-6789\\\"},\\\"Type\\\":\\\"ClosingAvailable\\\",\\\"Amount\\\":{\\\"Amount\\\":\\\"10,000,000.00\\\",\\\"Currency\\\":\\\"GBP\\\"},\\\"CreditLine\\\":{\\\"Type\\\":\\\"Available\\\",\\\"Amount\\\":{\\\"Currency\\\":\\\"USD\\\",\\\"Amount\\\":\\\"1,000,000.00\\\"}}},{\\\"Account\\\":{\\\"AccountId\\\":\\\"145661113\\\",\\\"Name\\\":\\\"Mini Mule\\\",\\\"Phone\\\":\\\"123-456-7890\\\",\\\"SSN\\\":\\\"998-88-8787\\\"},\\\"Type\\\":\\\"ClosingAvailable\\\",\\\"Amount\\\":{\\\"Amount\\\":\\\"10,123,000.00\\\",\\\"Currency\\\":\\\"GBP\\\"},\\\"CreditLine\\\":{\\\"Type\\\":\\\"Available\\\",\\\"Amount\\\":{\\\"Currency\\\":\\\"USD\\\",\\\"Amount\\\":\\\"1,456,000.00\\\"}}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code1IPFile" format="xml">
+      <types:example format="xml" element="Staff" location="examples/code1IPFile.xml"/>
+    </types:type>
+    <types:type name="code5" format="json">
+      <types:shape format="weave" example="examples/code5IPFile.json"><![CDATA[%dw 2.0
+
+type code5 = Array<Array<{|  train: String,   price: String|}> | Array<{|  hotel: String,   price: String|}>> {"example": "[[{\\\"train\\\":\\\"rajdhani\\\",\\\"price\\\":\\\"2000\\\"},{\\\"train\\\":\\\"gatiman\\\",\\\"price\\\":\\\"9000\\\"}],[{\\\"hotel\\\":\\\"k2Inn\\\",\\\"price\\\":\\\"2400\\\"},{\\\"hotel\\\":\\\"hyatt\\\",\\\"price\\\":\\\"9400\\\"}]]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code7" format="json">
+      <types:shape format="weave" example="examples/code7IPFile.json"><![CDATA[%dw 2.0
+
+type code7 = Array<{|  key1: Array<String>, 
+  key2: Array<String>
+|}> {"example": "[{\\\"key1\\\":[\\\"ghi\\\"]},{\\\"key2\\\":[\\\"def\\\"]}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code7Part2" format="json">
+      <types:shape format="weave" example="examples/code7IPFile2.json"><![CDATA[%dw 2.0
+
+type code7Part2 = {|
+  key1: Array<Array<String>>, 
+  key2: Array<String>
+|} {"example": "{\\\"key1\\\":[[\\\"abc\\\"],[\\\"ghi\\\"]],\\\"key2\\\":[\\\"def\\\"]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code13" format="xml">
+      <types:example format="xml" element="OrderDetails" location="examples/code13IPFile.xml"/>
+    </types:type>
+    <types:type name="code1" format="xml">
+      <types:example format="xml" element="Staff" location="examples/code1IPFile-1.xml"/>
+    </types:type>
+    <types:type name="code7IPFile" format="json">
+      <types:shape format="weave" example="examples/code6IPFile.json"><![CDATA[%dw 2.0
+
+type code7IPFile = {|
+  Status: String, 
+  Access: String
+|} {"example": "{\\\"Status\\\":\\\"External\\\",\\\"Access\\\":\\\"Active\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="code6" format="json">
+      <types:shape format="weave" example="examples/code6IPFile-1.json"><![CDATA[%dw 2.0
+
+type code6 = {|
+  Status: String, 
+  Access: String
+|} {"example": "{\\\"Status\\\":\\\"External\\\",\\\"Access\\\":\\\"Active\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#be1b68df-cc78-4777-b7c6-1082b4b9dce5">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="test"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5d1a8f2f-68cc-4697-b27c-2ae4eaf15f45">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Code16"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b8446da3-5cfd-4882-b4ec-d14243e6eaac">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="arrayOfObjects"/>
+          <types:attributes type="arrayOfObjects"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#edcda14f-72b1-4853-9eb9-c88163fd5916">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code4IP"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4966d326-da87-42d0-8dfb-08c623ec48ac">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code10IPFile"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#7e1e36cb-6084-4846-b576-2e9c93803a6a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code11"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9d13471e-ed68-461d-908f-7168feb9a4a6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code1IPFile"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5483216a-59e3-4cb4-99b5-cbfe6aae42c8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code5"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#bad7347c-01fc-49b5-bd16-607f44cec063">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code7"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4cad859a-0824-41e1-9928-64f20e860520">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code7Part2"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cffd600a-0b2e-44ee-a319-dab5ac439cbc">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code13"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cb6fc57e-5752-44ec-9d3d-96ed05473ca7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code1"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6cf7afa7-a25a-48e3-a146-e39253ef29c5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="code6"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

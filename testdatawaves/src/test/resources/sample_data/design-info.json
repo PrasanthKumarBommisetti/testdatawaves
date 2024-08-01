@@ -1,0 +1,33 @@
+{
+  "sampleData": {
+    "de932f3d-61ce-47a2-a174-e26839a7614a": {
+      "payload": "sample_data/json.json"
+    },
+    "5d1a8f2f-68cc-4697-b27c-2ae4eaf15f45": {},
+    "154098d5-fa20-4a28-8243-b03195e3f2cd": {
+      "payload": "sample_data/json_1.json"
+    },
+    "5483216a-59e3-4cb4-99b5-cbfe6aae42c8": {
+      "payload": "sample_data/list_json.json"
+    },
+    "b8446da3-5cfd-4882-b4ec-d14243e6eaac": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "4cad859a-0824-41e1-9928-64f20e860520": {
+      "payload": "sample_data/java.dwl"
+    },
+    "cb6fc57e-5752-44ec-9d3d-96ed05473ca7": {
+      "payload": "sample_data/staff.xml"
+    },
+    "6cf7afa7-a25a-48e3-a146-e39253ef29c5": {},
+    "bf488927-622f-438e-8a88-17b9f7752d68": {
+      "payload": "sample_data/list_csv.csv"
+    },
+    "9ed151b4-4c3d-4137-8357-7b698bfceef9": {
+      "payload": "sample_data/java_1.dwl"
+    },
+    "cffd600a-0b2e-44ee-a319-dab5ac439cbc": {
+      "payload": "sample_data/orderdetails.xml"
+    }
+  }
+}
